@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planificador U</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Gestor Médico y de Emergencias</h1>
+      <nav>
+        <button onclick="mostrar('calendario')">Guardias/Turnos</button>
+        <button onclick="mostrar('emergencias')">Emergencias</button>
+        <button onclick="mostrar('reuniones')">Reuniones</button>
+        <button onclick="mostrar('notificaciones')">Notificaciones</button>
+      </nav>
+    </header>
+    <main>
+      <section id="calendario" class="visible">
+        <h2>Guardias y Turnos</h2>
+        <ul id="eventos-lista"></ul>
+        <button onclick="abrirFormulario()">Agregar Guardia/Turno</button>
+      </section>
+      <section id="emergencias" class="oculto">
+        <h2>Emergencias</h2>
+        <ul id="emergencias-lista"></ul>
+        <button onclick="abrirFormularioEmergencia()">
+          Reportar Emergencia
+        </button>
+      </section>
+      <section id="reuniones" class="oculto">
+        <h2>Reuniones Clínicas</h2>
+        <ul id="reuniones-lista"></ul>
+        <button onclick="abrirFormularioReunion()">Agregar Reunión</button>
+      </section>
+      <section id="notificaciones" class="oculto">
+        <h2>Notificaciones</h2>
+        <ul id="notificaciones-lista"></ul>
+      </section>
+      <div id="formulario-evento" class="modal oculto">
+        <form id="eventoForm">
+          <label
+            >Tipo:
+            <select name="tipo" required>
+              <option value="guardia">Guardia</option>
+              <option value="turno">Turno</option>
+            </select>
+          </label>
+          <label>Nombre: <input type="text" name="nombre" required /></label>
+          <label>Fecha: <input type="date" name="fecha" required /></label>
+          <label>Hora: <input type="time" name="hora" required /></label>
+          <label>Especialidad: <input type="text" name="especialidad" /></label>
+          <button type="submit">Guardar</button>
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </form>
+      </div>
+      <div id="formulario-emergencia" class="modal oculto">
+        <form id="emergenciaForm">
+          <label>Nombre: <input type="text" name="nombre" required /></label>
+          <label>Fecha: <input type="date" name="fecha" required /></label>
+          <label>Hora: <input type="time" name="hora" required /></label>
+          <label
+            >Descripción: <input type="text" name="descripcion" required
+          /></label>
+          <button type="submit">Reportar</button>
+          <button type="button" onclick="cerrarFormularioEmergencia()">
+            Cancelar
+          </button>
+        </form>
+      </div>
+      <div id="formulario-reunion" class="modal oculto">
+        <form id="reunionForm">
+          <label>Nombre: <input type="text" name="nombre" required /></label>
+          <label>Fecha: <input type="date" name="fecha" required /></label>
+          <label>Hora: <input type="time" name="hora" required /></label>
+          <label
+            >Descripción: <input type="text" name="descripcion" required
+          /></label>
+          <button type="submit">Guardar</button>
+          <button type="button" onclick="cerrarFormularioReunion()">
+            Cancelar
+          </button>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <p>© 2025 Gestor Médico y de Emergencias</p>
+    </footer>
+    <script src="app.js"></script>
+  </body>
+</html>
