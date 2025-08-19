@@ -1,1 +1,0 @@
-# Proyecto-Corte-1
