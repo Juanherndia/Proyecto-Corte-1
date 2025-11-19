@@ -1,20 +1,40 @@
-# 1. Inicio / Presentación del proyecto
+# Planificador Médico v3.0 - Tercer Corte 🏥
+
+## Sistema de Gestión Médica con Clean Architecture
+
+### 📋 Descripción del Proyecto
+
+Sistema integral para la gestión de eventos médicos, guardias, emergencias y personal hospitalario. Implementa **Clean Architecture**, principios **SOLID** y patrones de diseño modernos para garantizar escalabilidad, mantenibilidad y robusteza en entornos críticos de salud.
 
 En el ámbito médico y de emergencias, la gestión eficiente de turnos, guardias, reuniones clínicas y alertas es fundamental para salvar vidas y optimizar recursos. Los profesionales enfrentan estrés y riesgos por mala organización, falta de comunicación y sobrecarga de tareas. Este sistema centraliza la gestión de horarios, tareas críticas y notificaciones en una herramienta web automatizada, confiable y rápida.
 
-- [Presentación creativa](docs/Presentacion_Creativa.md)
-- [Presentación en Canva](https://www.canva.com/design/DAGwdS9Fnm8/BmZbxAsDl4N1BSSDWAEj0g/edit)
+**📚 Documentación del Proyecto:**
+- [📖 Arquitectura Completa](docs/Arquitectura_Completa.md) - Modelos 4+1 y C4
+- [🎨 Presentación Creativa](docs/Presentacion_Creativa.md) - Historia del usuario
+- [⚙️ Análisis Técnico](docs/Analisis_Tecnico.md) - Principios SOLID y patrones
+- [👥 Créditos y Roles](docs/Creditos_Roles.md) - Equipo de desarrollo
+- [🖼️ Presentación en Canva](https://www.canva.com/design/DAGwdS9Fnm8/BmZbxAsDl4N1BSSDWAEj0g/edit)
 
-# 2. Fundamentos de Ingeniería de Software
+### 🚀 Nuevas Características - Tercer Corte
 
-El sistema prioriza los siguientes atributos de calidad:
+- **🏗️ Clean Architecture**: Implementación completa con 4 capas bien definidas
+- **🔒 Seguridad Robusta**: JWT + BCrypt + autorización por roles
+- **🐳 Contenedorización**: Docker completo para desarrollo y producción  
+- **💉 Dependency Injection**: Container DI centralizado
+- **🧪 Testing**: Arquitectura preparada para testing completo
+- **📊 Monitoreo**: Prometheus + Grafana integrados
+- **🔧 DevOps**: CI/CD preparado con GitHub Actions
 
-- **Confiabilidad**
-- **Disponibilidad**
-- **Usabilidad**
-- **Mantenibilidad**
-- **Reusabilidad**
-- **Escalabilidad**
+### 🎯 Atributos de Calidad Logrados
+
+- **✅ Confiabilidad**: Arquitectura robusta con manejo de errores
+- **✅ Disponibilidad**: Contenedores con health checks y reinicio automático
+- **✅ Usabilidad**: API REST intuitiva y documentada
+- **✅ Mantenibilidad**: Clean Architecture con separación de responsabilidades
+- **✅ Reusabilidad**: Componentes modulares y reutilizables
+- **✅ Escalabilidad**: Preparado para microservicios y alta concurrencia
+- **✅ Seguridad**: Implementación completa de autenticación y autorización
+- **✅ Testabilidad**: Dependencias inyectadas y arquitectura limpia
 
 # 3. Diseño de software
 

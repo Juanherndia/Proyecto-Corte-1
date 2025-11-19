@@ -1,0 +1,203 @@
+# Docker Compose para producción
+# Configuración optimizada para entornos de producción
+
+version: '3.8'
+
+services:
+  # Aplicación principal (producción)
+  planificador-api:
+    build:
+      context: .
+      target: production
+    container_name: planificador-medico-api-prod
+    ports:
+      - "5000:5000"
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=planificador_medico_prod
+      - DB_USERNAME=planificador_user
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - app_logs:/app/logs
+    networks:
+      - planificador-network
+    restart: always
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Base de datos PostgreSQL (producción)
+  postgres:
+    image: postgres:15-alpine
+    container_name: planificador-postgres-prod
+    environment:
+      POSTGRES_DB: planificador_medico_prod
+      POSTGRES_USER: planificador_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/backup:/backup
+    networks:
+      - planificador-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '1.0'
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U planificador_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis para cache (producción)
+  redis:
+    image: redis:7-alpine
+    container_name: planificador-redis-prod
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - planificador-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Nginx como Load Balancer y Proxy Reverso
+  nginx:
+    image: nginx:alpine
+    container_name: planificador-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx-prod.conf:/etc/nginx/nginx.conf
+      - ./docker/ssl:/etc/nginx/ssl
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - planificador-api
+    networks:
+      - planificador-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # Backup automático de base de datos
+  postgres-backup:
+    image: postgres:15-alpine
+    container_name: postgres-backup
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/backup:/backup
+      - ./docker/backup-script.sh:/backup-script.sh
+    depends_on:
+      - postgres
+    networks:
+      - planificador-network
+    command: |
+      sh -c '
+        chmod +x /backup-script.sh
+        while true; do
+          /backup-script.sh
+          sleep 86400
+        done
+      '
+    restart: always
+
+  # Monitoreo con Prometheus (opcional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - planificador-network
+    restart: always
+
+  # Grafana para visualización (opcional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - planificador-network
+    restart: always
+
+# Volúmenes persistentes
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
+    driver: local
+  nginx_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+# Red personalizada con configuración de seguridad
+networks:
+  planificador-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: planificador-br
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16

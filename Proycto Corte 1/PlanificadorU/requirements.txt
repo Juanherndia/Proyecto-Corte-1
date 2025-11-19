@@ -1,0 +1,45 @@
+# Dependencias de Python para el proyecto
+
+# Framework web
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Base de datos y ORM
+psycopg2-binary==2.9.7
+SQLAlchemy==2.0.21
+alembic==1.12.0
+
+# Seguridad y autenticación
+bcrypt==4.0.1
+PyJWT==2.8.0
+cryptography==41.0.4
+
+# Validación y serialización
+marshmallow==3.20.1
+pydantic==2.3.0
+
+# Cache
+redis==4.6.0
+
+# HTTP y API
+requests==2.31.0
+gunicorn==21.2.0
+
+# Utilidades
+python-dotenv==1.0.0
+click==8.1.7
+
+# Fecha y hora
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Logging y monitoreo
+structlog==23.1.0
+
+# Validación de datos
+email-validator==2.0.0
+phonenumbers==8.13.20
+
+# Testing (incluidas en requirements para compatibilidad)
+pytest==7.4.2
+pytest-asyncio==0.21.1

@@ -1,0 +1,40 @@
+# Dependencias adicionales para desarrollo
+
+# Testing
+pytest==7.4.2
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+
+# Linting y formateo
+black==23.7.0
+flake8==6.0.0
+isort==5.12.0
+mypy==1.5.1
+
+# Pre-commit hooks
+pre-commit==3.4.0
+
+# Documentación
+Sphinx==7.1.2
+sphinx-rtd-theme==1.3.0
+
+# Herramientas de desarrollo
+ipython==8.15.0
+jupyter==1.0.0
+
+# Debugging
+pdb-tools==0.3.0
+
+# Perfilado de rendimiento
+memory-profiler==0.60.0
+line-profiler==4.1.1
+
+# Variables de entorno para desarrollo
+python-dotenv==1.0.0
+
+# HTTP testing
+httpx==0.24.1
+
+# Faker para datos de prueba
+Faker==19.3.1
